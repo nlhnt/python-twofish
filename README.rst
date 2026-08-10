@@ -3,6 +3,9 @@ python-twofish
 This is a fork to create a release compatible with Python 3.13+.
 import imp was removed in Python versions >= 3.13.
 
+Conda package is uploaded here:
+https://anaconda.org/channels/nlhnt/packages/twofish/overview
+
 ==============
 
 Bindings for the Twofish implementation by Niels Ferguson libtwofish-dev_.
