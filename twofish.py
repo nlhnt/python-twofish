@@ -16,11 +16,16 @@ from ctypes import (cdll, Structure,
                     c_char_p, c_int, c_uint32,
                     create_string_buffer)
 
-_spec = importlib.util.find_spec('_twofish')
-if _spec is None or _spec.origin is None:
-    raise ImportError("Could not locate compiled _twofish extension")
-
-_twofish = cdll.LoadLibrary(_spec.origin)
+# Fallback for Python versions where 'imp' was still present
+try:
+    import importlib.util
+    _spec = importlib.util.find_spec('_twofish')
+    if _spec is None or _spec.origin is None:
+        raise ImportError("Could not locate compiled _twofish extension")
+    _twofish = cdll.LoadLibrary(_spec.origin)
+except (ImportError, AttributeError):
+    import imp
+    _twofish = cdll.LoadLibrary(imp.find_module('_twofish')[1])
 
 class _Twofish_key(Structure):
     _fields_ = [("s", (c_uint32 * 4) * 256),
